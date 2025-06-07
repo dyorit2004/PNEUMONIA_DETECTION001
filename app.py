@@ -6,11 +6,11 @@ from PIL import Image
 from tensorflow.keras.models import load_model
 
 app = Flask(__name__)
-model = load_model("pneumonia1.h5")
+model = load_model("pneumonia2.h5")
 UPLOAD_FOLDER = os.path.join('static','uploads')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# Ensure upload folder exists
+
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 def prepare_image(file_path):
@@ -42,4 +42,6 @@ def index():
     return render_template("index.html", prediction=None)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(debug=False, host="0.0.0.0", port=port)
+
