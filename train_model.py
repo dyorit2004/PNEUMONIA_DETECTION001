@@ -14,7 +14,7 @@ pneumonia = os.listdir(img_directory + 'PNEUMONIA/')
 dataset = []
 label = []
 
-input_size1 = 120
+input_size1 = 64
 
 for img in healthy:
     if img.endswith('.jpeg'):
@@ -41,29 +41,22 @@ x_train = normalize(x_train, axis=1)
 x_test = normalize(x_test, axis=1)
 
 model = Sequential()
-model.add(Conv2D(32, (3,3), input_shape=(input_size1, input_size1, 3)))
-model.add(Activation('relu'))
+model.add(Conv2D(16, (3,3), input_shape=(input_size1, input_size1, 3)))
 model.add(MaxPooling2D(pool_size=(2,2)))
 
-model.add(Conv2D(32, (3,3), kernel_initializer='he_uniform'))
-model.add(Activation('relu'))
-model.add(MaxPooling2D(pool_size=(2,2)))
 
-model.add(Conv2D(64, (3,3), kernel_initializer='he_uniform'))
-model.add(Activation('relu'))
-model.add(MaxPooling2D(pool_size=(2,2)))
+model.add(Conv2D(32, (3, 3), activation='relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
 
 model.add(Flatten())
-model.add(Dense(64))
-model.add(Activation('relu'))
-model.add(Dropout(0.5))
-model.add(Dense(1))
-model.add(Activation('sigmoid'))
+model.add(Dense(32, activation='relu'))
+model.add(Dropout(0.3))
+model.add(Dense(1, activation='sigmoid'))
 
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-model.fit(x_train, y_train, batch_size=16, verbose=1, epochs=100, validation_data=(x_test, y_test), shuffle=False)
+model.fit(x_train, y_train, batch_size=16, verbose=1, epochs=50, validation_data=(x_test, y_test), shuffle=False)
 
-model.save('pneumonia2.h5')
+model.save('pneumonia_light.h5')
 
 

@@ -6,7 +6,7 @@ from PIL import Image
 from tensorflow.keras.models import load_model
 
 app = Flask(__name__)
-model = load_model("pneumonia2.h5")
+model = load_model("pneumonia_light.h5")
 UPLOAD_FOLDER = os.path.join('static','uploads')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -15,10 +15,10 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 def prepare_image(file_path):
     img = Image.open(file_path).convert("RGB")
-    img = img.resize((120, 120))
+    img = img.resize((64, 64))
     img_array = np.array(img)
     img_array = img_array / 255.0
-    img_array = img_array.reshape(1, 120, 120, 3)
+    img_array = img_array.reshape(1, 64, 64, 3)
     return img_array
 
 @app.route("/", methods=["GET", "POST"])
@@ -37,9 +37,10 @@ def index():
             image = prepare_image(file_path)
             prediction = float(model.predict(image)[0][0])
             label = "Pneumonia" if prediction > 0.5 else "Normal"
+            confidence = round(prediction * 100, 2) if label == "Pneumonia" else round((1 - prediction) * 100, 2)
             image_url=url_for('static',filename='uploads/' + filename)
-            return render_template("index.html", prediction=label, image_url=image_url)
-    return render_template("index.html", prediction=None)
+            return render_template("index.html", prediction=label, confidence=confidence, image_url=image_url)
+    return render_template("index.html", prediction=None,confidence=None)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

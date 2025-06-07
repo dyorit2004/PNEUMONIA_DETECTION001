@@ -33,6 +33,7 @@
         </form>
         {% if prediction %}
             <h3 class="mt-4">Prediction: <span class="text-{{ 'danger' if prediction == 'Pneumonia' else 'success' }}">{{ prediction }}</span></h3>
+            <h5 class="mt-2">Confidence: {{ confidence }}%</h5>
             <img src="{{ image_url }}" alt="Uploaded Image">
         {% endif %}
     </div>
