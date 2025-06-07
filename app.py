@@ -15,10 +15,10 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 def prepare_image(file_path):
     img = Image.open(file_path).convert("RGB")
-    img = img.resize((255, 255))
+    img = img.resize((120, 120))
     img_array = np.array(img)
     img_array = img_array / 255.0
-    img_array = img_array.reshape(1, 255, 255, 3)
+    img_array = img_array.reshape(1, 120, 120, 3)
     return img_array
 
 @app.route("/", methods=["GET", "POST"])
