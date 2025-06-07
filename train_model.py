@@ -14,7 +14,7 @@ pneumonia = os.listdir(img_directory + 'PNEUMONIA/')
 dataset = []
 label = []
 
-input_size1 = 255
+input_size1 = 120
 
 for img in healthy:
     if img.endswith('.jpeg'):
