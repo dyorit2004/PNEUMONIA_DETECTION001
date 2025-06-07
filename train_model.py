@@ -64,6 +64,6 @@ model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy']
 
 model.fit(x_train, y_train, batch_size=16, verbose=1, epochs=100, validation_data=(x_test, y_test), shuffle=False)
 
-model.save('pneumonia1.h5')
+model.save('pneumonia2.h5')
 
 
